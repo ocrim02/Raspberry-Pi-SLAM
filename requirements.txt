@@ -1,0 +1,6 @@
+pip>=20.3.4
+pyserial>=2.6
+PyLidar3>=1.6
+mathplotlib
+numpy
+graphslam==0.0.8
