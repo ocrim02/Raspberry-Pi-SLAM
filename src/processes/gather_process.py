@@ -11,7 +11,7 @@ from copy import deepcopy
 def gather_process(icp_queue):
     print("gather process start")
     if(not SIMULATION):
-        Obj = PyLidar3.YdLidarX4(LIDAR_PORT, LIDAR_BUFFER_SIZE)  #PyLidar3.your_version_of_lidar(port,chunk_size)
+        Obj = PyLidar3.YdLidarX4(LIDAR_PORT, LIDAR_BUFFER_SIZE)
         if(Obj.Connect() or True):
             Obj.Reset()
             print(Obj.GetDeviceInfo())
@@ -44,6 +44,7 @@ def gather_process(icp_queue):
             except KeyboardInterrupt:
                 print("end gather process")
 
+    # Simulation Section
     else:
         #data = np.load("src/data.npy", allow_pickle=True)
         #data = np.load("src/map1.npy", allow_pickle=True)
