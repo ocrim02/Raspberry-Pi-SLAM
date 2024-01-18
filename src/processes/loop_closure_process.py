@@ -80,11 +80,11 @@ def loop_closure_process(icp_queue, map_queue, og_queue):
         poses.append([T0, T1, math.radians(rotation), scan, raw])
         g._vertices.append(Vertex(len(vertices), PoseSE2([T0, T1], math.radians(rotation))))
 
-        
+        # pose based loop closure
         loop_closes = 0
         if(len(vertices) - last_closure > LC_SEARCH_FREQ):
-            for i in range(1, len(poses[LC_IGNORED_POSES:])):      #4 -> 6
-                if(math.sqrt((poses[i][0] - poses[-1][0])**2 + (poses[i][1] - poses[-1][1])**2) < LC_XY_THRES):     #200 for full apartment 2, 400 for single room
+            for i in range(1, len(poses[LC_IGNORED_POSES:])):
+                if(math.sqrt((poses[i][0] - poses[-1][0])**2 + (poses[i][1] - poses[-1][1])**2) < LC_XY_THRES):
                     print("additional edge added", i , " ", len(poses)-1)
                     pre = poses[i][3].copy()
                     cur = poses[-1][3].copy()
@@ -103,8 +103,7 @@ def loop_closure_process(icp_queue, map_queue, og_queue):
                     if(loop_closes >= LC_MAX_CLOSURES):
                         break
         
-        #if(len(vertices)%3 == 0 and og_queue.qsize() != 0 and len(vertices)>6):
-        
+        # global localiser loop closure
         if(USE_GLOBAL_LOC and len(vertices)%LC_GLOBAL_LOC_FREQ == 0 and loop_closes == 0 and og_queue.qsize() != 0 and len(vertices)>6):
             while(og_queue.qsize() != 0):
                 og = og_queue.get()
@@ -116,7 +115,7 @@ def loop_closure_process(icp_queue, map_queue, og_queue):
             R = np.array([[math.cos(math.radians(rotation-90)), -math.sin(math.radians(rotation-90))],
                         [math.sin(math.radians(rotation-90)), math.cos(math.radians(rotation-90))]])
             T = np.array([T0, T1])
-            t, r = global_matcher(R, T, LC_GLOBAL_LOC_ITER, ogMap, lidar_points)
+            t, r = global_matcher(R, T, LC_GLOBAL_LOC_ITER, ogMap, lidar_points, visualize=False)
             print("Global Result: ", t[0], t[1], -(math.degrees(math.asin(r[1][0]))+90))
             print("Local Result: ", T0, T1, rotation)
             if(abs(rotation-(-(math.degrees(math.asin(r[1][0]))+90))) < 10):

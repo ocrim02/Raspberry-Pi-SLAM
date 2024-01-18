@@ -1,5 +1,5 @@
 # Raspberry-Pi-SLAM
-In recent years, Simultaneous Localisation and Mapping (SLAM) algorithms have become integral to the advancement of robotics, enabling machines to autonomously navigate and map their surroundings. While the applications of SLAM are diverse and promising, the cost associated with implementing this technology has been a significant barrier, making it difficult for enthusiasts, hobbyists and educational institutions with limited budgets to access this technology. Recognising the transformative potential of SLAM in fostering innovation and learning, this work seeks to explore and present a SLAM algorithm tailored to work seamlessly with the widely available and affordable Raspberry Pi microcomputer, coupled with a low-cost LiDAR sensor. This research provides an implementation of a real-time SLAM algorithm designed for the Raspberry Pi, using only sparse LiDAR data.
+This repository contains code for a 2D LiDAR SLAM algorithm designed to work run embedded on a Raspberry Pi 3b or better with sparse LiDAR data as its only input.
 
 ![Mapping Example!](/images/example.PNG "Mapping example done in real-time on Raspberry Pi")
 

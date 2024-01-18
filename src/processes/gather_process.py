@@ -46,15 +46,15 @@ def gather_process(icp_queue):
 
     # Simulation Section
     else:
-        #data = np.load("src/data.npy", allow_pickle=True)
-        #data = np.load("src/map1.npy", allow_pickle=True)
-        #data = np.load("src/crazy.npy", allow_pickle=True)
-        #data = np.load("src/big_run_small_rot.npy", allow_pickle=True)
-        #data = np.load("src/big_run_big_rot.npy", allow_pickle=True)
-        #data = np.load("src/full_appartment.npy", allow_pickle=True)
+        #data = np.load("src/test_recordings/data.npy", allow_pickle=True)
+        #data = np.load("src/test_recordings/map1.npy", allow_pickle=True)
+        #data = np.load("src/test_recordings/crazy.npy", allow_pickle=True)
+        #data = np.load("src/test_recordings/big_run_small_rot.npy", allow_pickle=True)
+        #data = np.load("src/test_recordings/big_run_big_rot.npy", allow_pickle=True)
+        #data = np.load("src/test_recordings/full_appartment.npy", allow_pickle=True)
         data = np.load("src/test_recordings/full_appartment_2.npy", allow_pickle=True)
         data = data[40:]
-        #data = data[:-140]
+        
         prev_raw = data[0]
         prev_x, prev_y, c = advanced_filter(prev_raw)
 

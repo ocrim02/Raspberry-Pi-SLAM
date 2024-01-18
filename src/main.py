@@ -20,7 +20,5 @@ if __name__ == '__main__':
         print("kill child processes")
         gather.terminate()
         loop_closure.terminate()
-        #display.terminate()
     gather.terminate()
     loop_closure.terminate()
-    #p.join()

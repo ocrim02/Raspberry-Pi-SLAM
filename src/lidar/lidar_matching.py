@@ -30,7 +30,7 @@ def icp_matching(previous_points, current_points, ignore_outliers, show_animatio
     prev_indexes = []
 
     if show_animation:
-        fig = plt.figure()
+        fig, ax = plt.subplots(figsize=(25.60,14.40))
         if previous_points.shape[0] == 3:
             fig.add_subplot(111, projection='3d')
 
@@ -43,21 +43,15 @@ def icp_matching(previous_points, current_points, ignore_outliers, show_animatio
                 plt.plot([previous_points[0, prev_indexes[i]], current_points[0,current_indexes[i]]], [previous_points[1, prev_indexes[i]], current_points[1,current_indexes[i]]], c='g')
             plt.xlabel("X")
             plt.ylabel("Y")
-            plt.pause(0.1)
-            #plt.show()
+            plt.pause(0.5)
 
         prev_indexes, current_indexes, error = nearest_neighbor_association(previous_points, current_points, ignore_outliers, percent_outs)
-
-        #for i in range(len(prev_indexes)):
-        #    plt.plot([previous_points[0, prev_indexes[i]], current_points[0,current_indexes[i]]], [previous_points[1, prev_indexes[i]], current_points[1,current_indexes[i]]], c='g')
-        #plt.show()
         
         Rt, Tt = svd_motion_estimation(previous_points[:, prev_indexes], current_points[:, current_indexes])
         # update current points
         current_points = (Rt @ current_points) + Tt[:, np.newaxis]
 
         dError = abs(preError - error)
-        #print("Residual:", dError)
 
         if dError < 0:  # prevent matrix H changing, exit loop
             print("Not Converge...", preError, dError, count)
@@ -67,13 +61,11 @@ def icp_matching(previous_points, current_points, ignore_outliers, show_animatio
         H = update_homogeneous_matrix(H, Rt, Tt)
         
         if(dError <= EPS):
-            #print("Converge", error, dError, count)
             if show_animation:  # pragma: no cover
                 plot_points(previous_points, current_points, fig)
                 for i in range(len(prev_indexes)):
                     plt.plot([previous_points[0, prev_indexes[i]], current_points[0,current_indexes[i]]], [previous_points[1, prev_indexes[i]], current_points[1,current_indexes[i]]], c='g')
                 plt.pause(0.5)
-                #plt.show()
             break
         elif MAX_ITER <= count:
             print("Not Converge...", error, dError, count)
@@ -86,7 +78,6 @@ def icp_matching(previous_points, current_points, ignore_outliers, show_animatio
 
 
 def update_homogeneous_matrix(Hin, R, T):
-
     r_size = R.shape[0]
     H = np.zeros((r_size + 1, r_size + 1))
 
@@ -113,6 +104,7 @@ def nearest_neighbor_association(previous_points, current_points, ignore_outlier
     else:
         percentage = 100
     
+    # outlier filter
     threshold = np.percentile(values, percentage)
     current_indexes = np.where(values <= threshold)[0]
     prev_indexes = indexes[current_indexes]

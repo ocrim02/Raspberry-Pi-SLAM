@@ -24,7 +24,7 @@ GATHER_ROTATION_THRESHOLD = 2       # minimum rotation between lidar scans to be
 # Mapping Process
 
 MAP_FONT_SIZE = 22
-MAP_WINDOW_SIZE = (10.80, 10.80)
+MAP_WINDOW_SIZE = (25.60, 14.40)     #(10.80, 10.80) (4.80, 4.80)
 
 MAP_X_LENGTH = 16                   # in m
 MAP_Y_LENGTH = 16                   # in m
@@ -36,7 +36,7 @@ MAP_WALL_SIZE = 4 * MAP_GRID_SIZE   # in m
 
 USE_GLOBAL_LOC = True       # Set True if you want to use the global localiser in the loop closure process (uses more cpu but helps with longer explorations)
 LC_GLOBAL_LOC_FREQ = 5      # how often the global localiser is called if no other loops where closed
-LC_GLOBAL_LOC_ITER = [30]   # resolution steps for the iterative matching of the global localiser
+LC_GLOBAL_LOC_ITER = [500, 300, 200, 100, 30]   # resolution steps for the iterative matching of the global localiser
 
 LC_SEARCH_FREQ = 5          # after the given amount of scans a new loop closure search will be started
 LC_IGNORED_POSES = 20       # the last n poses will be ignored for the loop closure search to avoid small loops

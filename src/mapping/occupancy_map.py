@@ -1,5 +1,6 @@
 '''
 source: https://github.com/xiaofeng419/SLAM-2D-LIDAR-SCAN/tree/master
+Note: slightly modified by Mirco Richter
 '''
 
 import json
@@ -183,7 +184,6 @@ class OccupancyGrid:
         ogMap = np.flipud(1 - ogMap)
         plt.imshow(ogMap, cmap='gray', extent=[xRange[0], xRange[1], yRange[0], yRange[1]])
         plt.show()
-        #plt.pause(0.2)
         if plotThreshold:
             ogMap = ogMap >= 0.5
             plt.matshow(ogMap, cmap='gray', extent=[xRange[0], xRange[1], yRange[0], yRange[1]])
@@ -211,34 +211,3 @@ def replaceElementInTrajectoryPlot(matchedReading, id, xTrajectory, yTrajectory)
     xTrajectory[id] = x
     yTrajectory[id] = y
 
-def main():
-    initMapXLength, initMapYLength, unitGridSize, lidarFOV, lidarMaxRange = 10, 10, 0.02, np.pi, 10 # in Meters
-    wallThickness = 7 * unitGridSize
-    jsonFile = "src/mapping/intel_gfs.json"
-    with open(jsonFile, 'r') as f:
-        input = json.load(f)
-        sensorData = input['map']
-    numSamplesPerRev = len(sensorData[list(sensorData)[0]]['range'])  # Get how many points per revolution
-    initXY = sensorData[sorted(sensorData.keys())[0]]
-    og = OccupancyGrid(initMapXLength, initMapYLength, initXY, unitGridSize, lidarFOV, numSamplesPerRev, lidarMaxRange, wallThickness)
-    count = 0
-    plt.figure(figsize=(19.20, 19.20))
-    xTrajectory, yTrajectory = [], []
-    colors = iter(cm.rainbow(np.linspace(1, 0, len(sensorData) + 1)))
-    for key in sorted(sensorData.keys()):
-        count += 1
-        og.updateOccupancyGrid(sensorData[key])
-        print(sensorData[key])
-        updateTrajectoryPlot(sensorData[key], xTrajectory, yTrajectory, colors, count)
-        #if count == 100:
-        #   break
-
-    plt.scatter(xTrajectory[0], yTrajectory[0], color='r', s=500)
-    plt.scatter(xTrajectory[-1], yTrajectory[-1], color=next(colors), s=500)
-    plt.plot(xTrajectory, yTrajectory)
-    #plt.show()
-    og.plotOccupancyGrid([-12, 20], [-23.5, 7])
-    #og.plotOccupancyGrid(xRange =[-11.9, 20], yRange =[-23.5, 6.    og.plotOccupancyGrid()
-
-if __name__ == '__main__':
-    main()
